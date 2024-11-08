@@ -201,28 +201,35 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         <form id="wasteForm" class="mt-4" action="../pickup.php" method="POST">
             <div class="mb-3">
                 <label for="wasteType" class="form-label">Waste Type</label>
-                <select class="form-control" id="wasteType" name="wasteType" required>
+                <select class="form-control" id="waste_type" name="wasteType" required>
                     <option value="" disabled selected>Select waste type</option>
                     <option value="organic">Organic</option>
                     <option value="metal">Metal</option>
                     <option value="plastic">Plastic</option>
                     <option value="paper">Paper</option>
-                    <option value="hazardous">Hazardous</option> <!-- Added hazardous waste option -->
+                    <option value="hazardous">Hazardous</option>
                 </select>
             </div>
             <div class="mb-3">
                 <label for="wasteAmount" class="form-label">Waste Amount (kg)</label>
-                <input type="number" class="form-control" id="wasteAmount" name="wasteAmount" required min="0" step="0.01">
+                <input type="number" class="form-control" id="waste_amount" name="wasteAmount" required min="0" step="0.01">
             </div>
             <div class="mb-3">
-                <label for="pickupDate" class="form-label"> Set Pick Up Date</label>
-                <input type="date" class="form-control" id="pickupDate" name="pickupDate" required>
+                <label for="pickupDate" class="form-label">Set Pick Up Date</label>
+                <input type="date" class="form-control" id="pickup_date" name="pickupDate" required>
             </div>
-            
+            <div class="mb-3">
+                <label for="pickupTime" class="form-label">Set Pick Up Time</label>
+                <input type="time" class="form-control" id="pickup_time" name="pickupTime" required>
+            </div>
+            <div class="mb-3">
+                <label for="pickupAddress" class="form-label">Pick Up Address</label>
+                <input type="text" class="form-control" id="pickup_address" name="pickupAddress" required placeholder="Enter your pickup address">
+            </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
-</div> 
+</div>
 
     <!-- Google Map Display -->
     <div id="map" style="height: 450px; width: 800px;"></div> <!-- Set a height for the map -->

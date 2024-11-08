@@ -189,7 +189,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     <!-- Waste Form Card -->
     <div class="card" style="width: 496px; height: auto; display: flex; justify-content: center; align-items: center; margin-right: 20px;">
     <div class="card-body">
-        <form id="wasteForm" class="mt-4" action="../collector.php" method="POST">
+        <form id="wasteForm" class="mt-4" action="../colletor.php" method="POST">
             <div class="mb-3">
                 <label for="vehicleInfo" class="form-label">Vehicle Information</label>
                 <input type="text" class="form-control" id="vehicleInfo" name="vehicleInfo" required>

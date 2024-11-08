@@ -16,7 +16,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-icon.png">
     <link rel="icon" type="image/png" href="images/fav.png">
-    <title>Contributor Dashboard</title>
+    <title>Manufacture Dashboard</title>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700|Noto+Sans:300,400,500,600,700,800|PT+Mono:300,400,500,600,700" rel="stylesheet" />
     <link href="assets/css/nucleo-icons.css" rel="stylesheet" />
     <link rel="shortcut icon" href="../assets/imgs/fav 1.png" title="Favicon"/>

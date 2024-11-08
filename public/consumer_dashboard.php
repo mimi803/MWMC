@@ -306,51 +306,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 </body>
 </html>
 <div class="container">
-        <div class="row">
-            <div class="col-lg-4 mb-lg-0 mb-3">
-                <div class="card p-3">
-                    <div class="img-box">
-                        <img src="https://www.freepnglogos.com/uploads/visa-logo-download-png-21.png" alt="">
-                    </div>
-                    <div class="number">
-                        <label class="fw-bold" for="">**** **** **** 1060</label>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-between">
-                        <small><span class="fw-bold">Expiry date:</span><span>10/16</span></small>
-                        <small><span class="fw-bold">Name:</span><span>Kumar</span></small>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 mb-lg-0 mb-3">
-                <div class="card p-3">
-                    <div class="img-box">
-                        <img src="https://www.freepnglogos.com/uploads/mastercard-png/file-mastercard-logo-svg-wikimedia-commons-4.png"
-                            alt="">
-                    </div>
-                    <div class="number">
-                        <label class="fw-bold">**** **** **** 1060</label>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-between">
-                        <small><span class="fw-bold">Expiry date:</span><span>10/16</span></small>
-                        <small><span class="fw-bold">Name:</span><span>Kumar</span></small>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 mb-lg-0 mb-3">
-                <div class="card p-3">
-                    <div class="img-box">
-                        <img src="https://www.freepnglogos.com/uploads/discover-png-logo/credit-cards-discover-png-logo-4.png"
-                            alt="">
-                    </div>
-                    <div class="number">
-                        <label class="fw-bold">**** **** **** 1060</label>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-between">
-                        <small><span class="fw-bold">Expiry date:</span><span>10/16</span></small>
-                        <small><span class="fw-bold">Name:</span><span>Kumar</span></small>
-                    </div>
-                </div>
-            </div>
+ 
             <div class="col-12 mt-4">
                 <div class="card p-3">
                     <p class="mb-0 fw-bold h4">Payment Methods</p>
@@ -376,12 +332,8 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                                             product</span></p>
                                     <p class="mb-0"><span class="fw-bold">Price:</span><span
                                             class="c-green">:$452.90</span></p>
-                                    <p class="mb-0">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Atque
-                                        nihil neque
-                                        quisquam aut
-                                        repellendus, dicta vero? Animi dicta cupiditate, facilis provident quibusdam ab
-                                        quis,
-                                        iste harum ipsum hic, nemo qui!</p>
+                                    <p class="mb-0">Lo
+                                        </p>
                                 </div>
                             </div>
                         </div>

@@ -8,7 +8,7 @@ session_start(); // Start session to access user data if logged in
 
 // Check if the user is logged in via user_id
 if (!isset($_SESSION['user_id'])) {
-    echo json_encode(['status' => 'error', 'message' => 'User not authenticated.']);
+    echo json_encode(['status' => 'error', 'message' => 'User  not authenticated.']);
     exit;
 }
 
@@ -23,7 +23,9 @@ try {
         $wasteType = filter_input(INPUT_POST, 'wasteType', FILTER_SANITIZE_STRING);
         $wasteAmount = filter_input(INPUT_POST, 'wasteAmount', FILTER_VALIDATE_FLOAT); // Changed to FLOAT for decimal values
         $pickupDate = filter_input(INPUT_POST, 'pickupDate', FILTER_SANITIZE_STRING); // Assume date is sent as a string
-        $pickupStatus = 'Pending'; // Default status when adding a new record
+        $pickupTime = filter_input(INPUT_POST, 'pickupTime', FILTER_SANITIZE_STRING); // Added pickup time
+        $pickupAddress = filter_input(INPUT_POST, 'pickupAddress', FILTER_SANITIZE_STRING); // Added pickup address
+        $requestStatus = 'pending'; // Default status when adding a new record
 
         // Validate inputs
         $validWasteTypes = ['organic', 'metal', 'plastic', 'paper', 'hazardous'];
@@ -42,23 +44,40 @@ try {
         // Get user_id from session
         $userId = $_SESSION['user_id'];
 
-        // Insert data into contributordetails table for each request
-        $sql = "INSERT INTO contributordetails (user_id, waste_type, waste_amount, pickup_date, pickup_status) 
-                VALUES (:userId, :wasteType, :wasteAmount, :pickupDate, :pickupStatus)";
+        // Fetch contributor details
+        $stmt = $conn->prepare("SELECT contributor_id FROM contributordetails WHERE user_id = :userId");
+        $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+        $stmt->execute();
+        $contributor = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$contributor) {
+            echo json_encode(['status' => 'error', 'message' => 'Contributor not found.']);
+            exit;
+        }
+
+        $contributorId = $contributor['contributor_id'];
+
+
+        // Insert data into pickup_requests table
+        $sql = "INSERT INTO pickup_requests (contributor_id, collector_id, pickup_date, pickup_time, pickup_address, waste_type, waste_amount, request_status) 
+                VALUES (:contributorId, :collectorId, :pickupDate, :pickupTime, :pickupAddress, :wasteType, :wasteAmount, :requestStatus)";
         $stmt = $conn->prepare($sql);
 
         // Bind parameters
-        $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+        $stmt->bindParam(':contributorId', $contributorId, PDO::PARAM_INT);
+        $stmt->bindParam(':collectorId', $collectorId, PDO::PARAM_INT);
+        $stmt->bindParam(':pickupDate', $pickupDate, PDO::PARAM_STR);
+        $stmt->bindParam(':pickupTime', $pickupTime, PDO::PARAM_STR);
+        $stmt->bindParam(':pickupAddress', $pickupAddress, PDO::PARAM_STR);
         $stmt->bindParam(':wasteType', $wasteType, PDO::PARAM_STR);
         $stmt->bindParam(':wasteAmount', $wasteAmount, PDO::PARAM_STR); // Use PARAM_STR for decimal values
-        $stmt->bindParam(':pickupDate', $pickupDate, PDO::PARAM_STR);
-        $stmt->bindParam(':pickupStatus', $pickupStatus, PDO::PARAM_STR); // Default to 'Pending'
+        $stmt->bindParam(':requestStatus', $requestStatus, PDO::PARAM_STR); // Default to 'pending'
 
         // Execute the query
         if ($stmt->execute()) {
-            echo json_encode(['status' => 'success', 'message' => 'Waste record added successfully.']);
+            echo json_encode(['status' => 'success', 'message' => 'Pickup request created successfully.']);
         } else {
-            echo json_encode(['status' => 'error', 'message' => 'Failed to add waste record.']);
+            echo json_encode(['status' => 'error', 'message' => 'Failed to create pickup request.']);
         }
     }
 } catch (PDOException $e) {
