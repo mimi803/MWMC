@@ -189,18 +189,18 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     <!-- Waste Form Card -->
     <div class="card" style="width: 496px; height: auto; display: flex; justify-content: center; align-items: center; margin-right: 20px;">
     <div class="card-body">
-        <form id="wasteForm" class="mt-4" action="../colletor.php" method="POST">
+        <form id="wasteForm" class="mt-4" action="../collector.php" method="POST">
             <div class="mb-3">
                 <label for="vehicleInfo" class="form-label">Vehicle Information</label>
-                <input type="text" class="form-control" id="vehicleInfo" name="vehicleInfo" required>
+                <input type="text" class="form-control" id="vehicle_info" name="vehicleInfo" required placeholder="Enter vehicle details">
             </div>
             <div class="mb-3">
                 <label for="collectionRoutes" class="form-label">Collection Routes</label>
-                <input type="text" class="form-control" id="collectionRoutes" name="collectionRoutes" required>
+                <input type="text" class="form-control" id="collection_routes" name="collectionRoutes" required placeholder="Enter collection routes">
             </div>
             <div class="mb-3">
                 <label for="totalCollected" class="form-label">Total Collected (kg)</label>
-                <input type="number" class="form-control" id="totalCollected" name="totalCollected" required step="0.01" min="0">
+                <input type="number" class="form-control" id="total_collected_waste" name="totalCollected" required step="0.01" min="0" placeholder="Enter total collected weight">
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>

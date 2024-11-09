@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2ed82195-827c-4d0a-81af-106569e1a0e3" name="Changes" comment="">
+    <list default="true" id="2ed82195-827c-4d0a-81af-106569e1a0e3" name="Changes" comment="modified to handle pick up request">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/collector.php" beforeDir="false" afterPath="$PROJECT_DIR$/collector.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/collector_dashboard.php" beforeDir="false" afterPath="$PROJECT_DIR$/public/collector_dashboard.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -14,6 +16,7 @@
   </component>
   <component name="Git.Settings">
     <branch-grouping />
+    <option name="PUSH_AUTO_UPDATE" value="true" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
         <entry key="$PROJECT_DIR$" value="main" />
@@ -71,6 +74,15 @@
       <option name="presentableId" value="Default" />
       <updated>1730925401748</updated>
     </task>
+    <task id="LOCAL-00001" summary="modified to handle pick up request">
+      <option name="closed" value="true" />
+      <created>1731092889868</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1731092889868</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -89,5 +101,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="modified to handle pick up request" />
+    <option name="LAST_COMMIT_MESSAGE" value="modified to handle pick up request" />
   </component>
 </project>

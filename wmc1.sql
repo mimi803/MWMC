@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 08, 2024 at 03:22 PM
+-- Generation Time: Nov 09, 2024 at 09:52 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -32,8 +32,16 @@ CREATE TABLE `collectordetails` (
   `user_id` int(11) DEFAULT NULL,
   `vehicle_info` varchar(255) DEFAULT NULL,
   `collection_route` text DEFAULT NULL,
-  `total_collected_waste` decimal(10,2) DEFAULT NULL
+  `total_collected_waste` decimal(10,2) DEFAULT NULL,
+  `request_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `collectordetails`
+--
+
+INSERT INTO `collectordetails` (`collector_id`, `user_id`, `vehicle_info`, `collection_route`, `total_collected_waste`, `request_id`) VALUES
+(3, 14, 'kby 557p', 'kimbo ruiru', 123.00, NULL);
 
 -- --------------------------------------------------------
 
@@ -62,12 +70,15 @@ INSERT INTO `consumerdetails` (`consumer_id`, `user_id`, `purchase_history`) VAL
 
 CREATE TABLE `contributordetails` (
   `contributor_id` int(11) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `waste_type` varchar(50) DEFAULT NULL,
-  `waste_amount` decimal(10,2) DEFAULT NULL,
-  `pickup_date` date DEFAULT NULL,
-  `pickup_status` enum('Pending','Picked Up','Cancelled') DEFAULT NULL
+  `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `contributordetails`
+--
+
+INSERT INTO `contributordetails` (`contributor_id`, `user_id`) VALUES
+(2, 13);
 
 -- --------------------------------------------------------
 
@@ -79,9 +90,16 @@ CREATE TABLE `manufacturerdetails` (
   `manufacturer_id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
   `processing_capacity` decimal(10,2) DEFAULT NULL,
-  `products_made` text DEFAULT NULL,
+  `products_made` enum('biogas','artwork','electricity') DEFAULT NULL,
   `sustainability_rating` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `manufacturerdetails`
+--
+
+INSERT INTO `manufacturerdetails` (`manufacturer_id`, `user_id`, `processing_capacity`, `products_made`, `sustainability_rating`) VALUES
+(1, 12, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -103,7 +121,10 @@ CREATE TABLE `notifications` (
 --
 
 INSERT INTO `notifications` (`notification_id`, `user_id`, `notification_type`, `message`, `sent_date`, `read_status`) VALUES
-(4, 11, NULL, NULL, NULL, 0);
+(4, 11, NULL, NULL, NULL, 0),
+(5, 12, NULL, NULL, NULL, 0),
+(6, 13, NULL, NULL, NULL, 0),
+(7, 14, NULL, NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -129,7 +150,8 @@ INSERT INTO `orders` (`order_id`, `consumer_id`, `order_date`, `total_amount`, `
 (6, 4, '2024-11-08 16:28:31', 12.00, 'Pending'),
 (7, 4, '2024-11-08 16:46:59', 34.00, 'Pending'),
 (8, 4, '2024-11-08 16:54:53', 66.01, 'Processing'),
-(9, 4, '2024-11-08 16:57:06', 45.02, 'Pending');
+(9, 4, '2024-11-08 16:57:06', 45.02, 'Pending'),
+(10, 4, '2024-11-08 23:00:33', 100.00, 'Pending');
 
 -- --------------------------------------------------------
 
@@ -151,7 +173,27 @@ CREATE TABLE `order_items` (
 INSERT INTO `order_items` (`order_item_id`, `order_id`, `product_id`, `product_quality`) VALUES
 (1, 4, 1, 'Electricity (kW)'),
 (5, 8, 5, ''),
-(6, 9, 6, '');
+(6, 9, 6, ''),
+(7, 10, 7, '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pickup_requests`
+--
+
+CREATE TABLE `pickup_requests` (
+  `request_id` int(11) NOT NULL,
+  `contributor_id` int(11) DEFAULT NULL,
+  `pickup_date` date DEFAULT NULL,
+  `pickup_time` time DEFAULT NULL,
+  `pickup_address` varchar(255) DEFAULT NULL,
+  `waste_type` varchar(50) DEFAULT NULL,
+  `waste_amount` decimal(10,2) DEFAULT NULL,
+  `request_status` enum('pending','accepted','completed','canceled') DEFAULT NULL,
+  `rating` int(11) DEFAULT NULL,
+  `review` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -176,7 +218,8 @@ INSERT INTO `products` (`product_id`, `product_type`, `subscription`, `fixed_pri
 (1, 'Biogas', 'Weekly', 90.02, 'kgs', '2024-11-08 16:26:36'),
 (2, 'Biogas', 'Weekly', 12.00, 'kgs', '2024-11-08 16:28:29'),
 (5, 'Art Work', 'Weekly', 66.01, '', '2024-11-08 16:54:53'),
-(6, 'Electricity', 'Yearly', 45.02, 'kW', '2024-11-08 16:57:06');
+(6, 'Electricity', 'Yearly', 45.02, 'kW', '2024-11-08 16:57:06'),
+(7, 'Electricity', 'Monthly', 100.00, 'kW', '2024-11-08 23:00:33');
 
 -- --------------------------------------------------------
 
@@ -198,7 +241,10 @@ CREATE TABLE `reviews_ratings` (
 --
 
 INSERT INTO `reviews_ratings` (`review_id`, `user_id`, `target_user_id`, `rating`, `review_text`, `review_date`) VALUES
-(2, 11, NULL, NULL, NULL, NULL);
+(2, 11, NULL, NULL, NULL, NULL),
+(3, 12, NULL, NULL, NULL, NULL),
+(4, 13, NULL, NULL, NULL, NULL),
+(5, 14, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -221,11 +267,10 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`user_id`, `name`, `email`, `password`, `role`, `contact_info`, `location`) VALUES
-(1, 'brian muchiri', 'muchiribrianchiri@gmail.com', '$2y$10$uV0uV/23UH69qE0Ywhm8y.J6r8DIGjhxrBRP4OxiCvzIHy8qtVA3C', 'Contributor', '0717350160', 'kiambu'),
-(2, 'Mwene', 'mwene@gmail.com', '$2y$10$JGD81MKlMpd21YG8dd2Nu.0Oqz0896BRqGonrrRwY531OY9FR./a6', 'Collector', '0789643579', 'kiambu'),
-(3, 'joshua nyamberi', 'joshua@gmail.com', '$2y$10$e/.DGfV22BriTraT34qFzOBKNwWYVFEzuHBditm5WSq5Y2ednpbtK', 'Manufacturer', '0717456899', 'Kisii'),
-(4, 'sylvia kirriri', 'sylvia@gmail.com', '$2y$10$FNOxCSXEc7szuRfQDVKFGOYkChKgTrKdydEiRj/hU9ZcnSZFaSUDa', 'Consumer', '0787690347', 'githunguri'),
-(11, 'john doe', 'doe@gmail.com', '$2y$10$SML78cOc0BL8tl6IdMc34uak/gkEzgi6YqwosM1O4Ei54Xq18J6nq', 'Consumer', '0712345678', 'jkuat exit');
+(11, 'john doe', 'doe@gmail.com', '$2y$10$SML78cOc0BL8tl6IdMc34uak/gkEzgi6YqwosM1O4Ei54Xq18J6nq', 'Consumer', '0712345678', 'jkuat exit'),
+(12, 'joshua nyamberi ', 'joshua@gmail.com', '$2y$10$ZC1SMeJlVfYHqgnEVQLDUetBrXIhG1odtgPlDtw0HY0ZPPMA14yhm', 'Manufacturer', '07567689022', 'kisii'),
+(13, 'Mwene', 'muchiribrianchiri@gmail.com', '$2y$10$4ouxrIWb88IywKlRJm7qUeS5tyKPj9LIPELsWNLdAwkx5UyXKgmYi', 'Contributor', '0717350160', 'k road'),
+(14, 'muchiri', 'brian.kang\'ethe@students.piu.ac.ke', '$2y$10$DdWp94Bk6btWOT.OuuI7O.BD03CnTSLFeJzC6SaNIVPtX1nZ.DL7m', 'Collector', '07567689022', 'Ruiru');
 
 --
 -- Indexes for dumped tables
@@ -236,6 +281,7 @@ INSERT INTO `user` (`user_id`, `name`, `email`, `password`, `role`, `contact_inf
 --
 ALTER TABLE `collectordetails`
   ADD PRIMARY KEY (`collector_id`),
+  ADD UNIQUE KEY `uq_request_id` (`request_id`),
   ADD KEY `user_id` (`user_id`);
 
 --
@@ -282,6 +328,13 @@ ALTER TABLE `order_items`
   ADD KEY `product_id` (`product_id`);
 
 --
+-- Indexes for table `pickup_requests`
+--
+ALTER TABLE `pickup_requests`
+  ADD PRIMARY KEY (`request_id`),
+  ADD KEY `contributor_id` (`contributor_id`);
+
+--
 -- Indexes for table `products`
 --
 ALTER TABLE `products`
@@ -309,7 +362,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `collectordetails`
 --
 ALTER TABLE `collectordetails`
-  MODIFY `collector_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `collector_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `consumerdetails`
@@ -321,49 +374,55 @@ ALTER TABLE `consumerdetails`
 -- AUTO_INCREMENT for table `contributordetails`
 --
 ALTER TABLE `contributordetails`
-  MODIFY `contributor_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `contributor_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `manufacturerdetails`
 --
 ALTER TABLE `manufacturerdetails`
-  MODIFY `manufacturer_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `manufacturer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `pickup_requests`
+--
+ALTER TABLE `pickup_requests`
+  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `reviews_ratings`
 --
 ALTER TABLE `reviews_ratings`
-  MODIFY `review_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `review_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Constraints for dumped tables
@@ -411,6 +470,13 @@ ALTER TABLE `orders`
 ALTER TABLE `order_items`
   ADD CONSTRAINT `order_items_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`),
   ADD CONSTRAINT `order_items_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`);
+
+--
+-- Constraints for table `pickup_requests`
+--
+ALTER TABLE `pickup_requests`
+  ADD CONSTRAINT `fk_pickup_requests_collectordetails` FOREIGN KEY (`request_id`) REFERENCES `collectordetails` (`request_id`),
+  ADD CONSTRAINT `pickup_requests_ibfk_1` FOREIGN KEY (`contributor_id`) REFERENCES `contributordetails` (`contributor_id`);
 
 --
 -- Constraints for table `reviews_ratings`

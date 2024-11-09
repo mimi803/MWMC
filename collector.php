@@ -8,7 +8,7 @@ session_start(); // Start session to access user data if logged in
 
 // Check if the user is logged in via user_id
 if (!isset($_SESSION['user_id'])) {
-    echo json_encode(['status' => 'error', 'message' => 'User not authenticated.']);
+    echo json_encode(['status' => 'error', 'message' => 'User  not authenticated.']);
     exit;
 }
 
@@ -59,9 +59,28 @@ try {
 
         // Execute the query for collector details
         if ($stmtCollector->execute()) {
-            // Commit the transaction
-            $conn->commit();
-            echo json_encode(['status' => 'success', 'message' => 'Collector record added successfully.']);
+            // Get the last inserted collector ID
+            $collectorId = $conn->lastInsertId();
+
+            // Insert into pickup_requests table
+            $sqlPickupRequest = "INSERT INTO pickup_requests (collector_id, request_status, pickup_date) VALUES (:collectorId, :requestStatus, :pickupDate)";
+            $stmtPickupRequest = $conn->prepare($sqlPickupRequest);
+
+            // Bind parameters for pickup requests
+            $stmtPickupRequest->bindParam(':collectorId', $collectorId, PDO::PARAM_INT);
+            $stmtPickupRequest->bindParam(':requestStatus', $pickupStatus, PDO::PARAM_STR);
+            $stmtPickupRequest->bindParam(':pickupDate', $pickupDate, PDO::PARAM_STR);
+
+            // Execute the query for pickup requests
+            if ($stmtPickupRequest->execute()) {
+                // Commit the transaction
+                $conn->commit();
+                echo json_encode(['status' => 'success', 'message' => 'Collector record and pickup request added successfully.']);
+            } else {
+                // Roll back transaction
+                $conn->rollBack();
+                echo json_encode(['status' => 'error', 'message' => 'Failed to add pickup request.']);
+            }
         } else {
             // Roll back transaction
             $conn->rollBack();
@@ -72,7 +91,7 @@ try {
     // Roll back transaction
     $conn->rollBack();
     // Handle connection or execution errors
-    error_log('Database error: ' . $e->getMessage()); // Log error in server logs
+ error_log('Database error: ' . $e->getMessage()); // Log error in server logs
     echo json_encode(['status' => 'error', 'message' => 'Database error occurred.']);
 }
 
